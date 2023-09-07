@@ -45,8 +45,8 @@ test02RemovingCustomerShouldNotTakeMoreThan100Milliseconds
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'AS 9/5/2023 20:10:52'!
-test03CanNotAddACustomerWithEmptyName 
+!CustomerBookTest methodsFor: 'testing' stamp: 'asd 9/7/2023 12:53:52'!
+test03CanNotAddACustomerWithEmptyName
 
 	| customerBook |
 			
@@ -54,7 +54,7 @@ test03CanNotAddACustomerWithEmptyName
 
 	self run: [customerBook addCustomerNamed: ''] andOn: Error verify: (self customerBookIsEmpty: customerBook)! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'as 9/6/2023 23:34:09'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'asd 9/7/2023 12:54:10'!
 test04CanNotRemoveAnInvalidCustomer
 	
 	| customerBook johnLennon |
@@ -62,10 +62,10 @@ test04CanNotRemoveAnInvalidCustomer
 	johnLennon := 'John Lennon'.
 	customerBook := self setUpBookWithCustomerNamed: johnLennon.
 	
-	self run: [customerBook removeCustomerNamed: 'Paul McCartney'] andOn: NotFound verify: (self customerBook: customerBook justIncludes: johnLennon)
+	self run: [customerBook removeCustomerNamed: 'Paul McCartney'] andOn: NotFound verify: (customerBook justIncludes: johnLennon)
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'as 9/6/2023 23:33:44'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'asd 9/7/2023 01:45:26'!
 test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney expectedValues |
@@ -76,14 +76,14 @@ test05SuspendingACustomerShouldNotRemoveItFromCustomerBook
 	
 	expectedValues := Bag with:0 with:1 with:1.
 	
-	self verifyExpectedValues: expectedValues areCorrectForBook: customerBook.
+	self assert: (expectedValues = customerBook customerCounts).
 	self assert: (customerBook includesCustomerNamed: paulMcCartney).
 	
 
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'as 9/6/2023 23:34:53'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'asd 9/7/2023 02:11:21'!
 test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 
 	| customerBook paulMcCartney expectedValues|
@@ -96,14 +96,14 @@ test06RemovingASuspendedCustomerShouldRemoveItFromCustomerBook
 	
 	expectedValues := Bag with:0 with:0 with:0.
 	
-	self verifyExpectedValues: expectedValues areCorrectForBook: customerBook.
+	self assert: (expectedValues = customerBook customerCounts).
 	self deny: (customerBook includesCustomerNamed: paulMcCartney).
 
 
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'as 9/6/2023 23:53:43'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'asd 9/7/2023 12:54:49'!
 test07CanNotSuspendAnInvalidCustomer
 	
 	| customerBook johnLennon |
@@ -115,7 +115,7 @@ test07CanNotSuspendAnInvalidCustomer
 
 ! !
 
-!CustomerBookTest methodsFor: 'testing' stamp: 'as 9/6/2023 23:53:50'!
+!CustomerBookTest methodsFor: 'testing' stamp: 'asd 9/7/2023 12:55:05'!
 test08CanNotSuspendAnAlreadySuspendedCustomer
 	
 	| customerBook johnLennon |
@@ -128,18 +128,10 @@ test08CanNotSuspendAnAlreadySuspendedCustomer
 ! !
 
 
-!CustomerBookTest methodsFor: 'testHelpers' stamp: 'as 9/6/2023 23:52:10'!
+!CustomerBookTest methodsFor: 'testHelpers' stamp: 'asd 9/7/2023 02:18:04'!
 assertSuspending: aName fromBook: customerBook shouldRaise: error andJustInclude: anotherName
 
-	self run: [ customerBook suspendCustomerNamed: 'George Harrison'. self fail ] andOn: CantSuspend verify: (self customerBook: customerBook justIncludes: anotherName)
-	
-! !
-
-!CustomerBookTest methodsFor: 'testHelpers' stamp: 'AS 9/5/2023 20:14:06'!
-customerBook: customerBook justIncludes: name
-
-	^ [customerBook numberOfCustomers = 1. 
-		(customerBook includesCustomerNamed: name)]
+	self run: [ customerBook suspendCustomerNamed: 'George Harrison'. self fail ] andOn: CantSuspend verify: (customerBook justIncludes: anotherName)
 	
 ! !
 
@@ -182,38 +174,12 @@ setUpBookWithCustomerNamed: aName
 	
 ! !
 
-!CustomerBookTest methodsFor: 'testHelpers' stamp: 'as 9/6/2023 23:51:14'!
-suspend: aName fromBook: customerBook shouldRaise: error andJustInclude: anotherName
-
-	self run: [ customerBook suspendCustomerNamed: 'George Harrison'. self fail ] andOn: CantSuspend verify: (self customerBook: customerBook justIncludes: anotherName)
-	
-! !
-
 !CustomerBookTest methodsFor: 'testHelpers' stamp: 'MF 9/5/2023 11:55:48'!
 verify: aClosure runsInLessThan: aTime
 
 	self assert: (self runAndTime: aClosure) < (aTime)
 	
 ! !
-
-!CustomerBookTest methodsFor: 'testHelpers' stamp: 'AS 9/5/2023 21:51:47'!
-verifyExpectedValues: values areCorrectForBook: customerBook
-	| realValues |
-
-	realValues := Bag new.
-
-	realValues add: customerBook numberOfActiveCustomers.
-	realValues add: customerBook numberOfSuspendedCustomers.
-	realValues add: customerBook numberOfCustomers.
-	
-	^ self verifyObject: values equalsObject: realValues
-	
-	! !
-
-!CustomerBookTest methodsFor: 'testHelpers' stamp: 'AS 9/5/2023 20:35:18'!
-verifyObject: firstObject equalsObject: secondObject
-	
-	^ self assert: firstObject = secondObject! !
 
 
 !classDefinition: #CustomerBook category: 'CodigoRepetido-Ejercicio'!
@@ -233,6 +199,14 @@ isEmpty
 	
 	^active isEmpty and: [ suspended isEmpty ]! !
 
+!CustomerBook methodsFor: 'testing' stamp: 'asd 9/7/2023 02:17:21'!
+justIncludes: name
+
+	^ [self numberOfCustomers = 1. 
+		(self includesCustomerNamed: name)]
+	
+! !
+
 
 !CustomerBook methodsFor: 'initialization' stamp: 'NR 9/17/2020 07:23:04'!
 initialize
@@ -248,6 +222,18 @@ addCustomerNamed: aName
 	(self includesCustomerNamed: aName) ifTrue: [ self signalCustomerAlreadyExists ].
 	
 	active add: aName ! !
+
+!CustomerBook methodsFor: 'customer management' stamp: 'asd 9/7/2023 02:09:21'!
+customerCounts
+	| customerCounts |
+	
+	customerCounts := Bag new.
+	
+	customerCounts add: self numberOfActiveCustomers.
+	customerCounts add: self numberOfSuspendedCustomers.
+	customerCounts add: self numberOfCustomers.
+	
+	^customerCounts! !
 
 !CustomerBook methodsFor: 'customer management' stamp: 'NR 4/3/2019 10:14:26'!
 numberOfActiveCustomers
