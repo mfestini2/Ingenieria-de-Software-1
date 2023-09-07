@@ -1,0 +1,19 @@
+Las versiones "2" de los tests son las que pasaste.
+
+Para los tests 3,4,7,8 no estoy seguro de cual es mejor. Lo dejo a tu criterio.
+
+Estoy convencido de que para los tests 5 y 6 la nueva version es mejor.
+
+-------------------
+
+Moví justIncludes a la categoria "testing" de customerBook (me parecia mas logico y evita que tengamos que pasar el book como parametro cada vez que la usabamos)
+
+Existe customerCounts. No me termina de convencer el nombre porque no dice exactamente que hace, pero no se me ocurrió otro.
+
+Hay un mensaje addMultiple:to:, no logre hacerlo funcionar (quise declarar una coleccion inline pero no me salio), tampoco estoy seguro que haga falta. Si al final no lo usamos matemoslo.
+
+Se me hace que el nuevo removeCustomerNamed es mas dificil de leer que el anterior (y el que usan en la cadena de mails). Pero a la vez el nuevo agrega mas semantica, como los profesores ya confirmaron que el viejo no iba, usemos el actual. De todas formas voy a estar salado hasta que los profesores muestren su solucion, para mi la forma de los del mail es muchisimo mas clara y "repite" 2 lineas de codigo. Espero que muestren una forma de hacer, de forma sencilla, que elimine al elemento en la coleccion que corresponda en pocas lineas, porque ninguna de las 2 formas me parece escalable si pasamos de tener una union de 2 colecciones a una de n.
+
+Se me ocurre que tal vez lo que quieran es que tengamos un mensaje al que le mandamos una coleccion de colecciones (conjunto hecho de la union de varios subconjuntos) y el elemento a borrar, hace un doble for para recorrerlas todas, borra las apariciones de ese elemento y de haber encontrado alguna lo devuelvo y si no da NotFound.
+
+Quise ver que te parecia esta ultima idea antes de armarla porque mepa que me va a tomar un tiempo armarla. Si te gusta, mañana la armamos y creo que con eso ya tenemos todo.
