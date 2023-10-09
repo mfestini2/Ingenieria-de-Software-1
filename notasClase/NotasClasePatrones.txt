@@ -1,0 +1,25 @@
+3 soluciones a problemas recurrentes.
+
+
+               Especificos a algun lenguaje            | abstractos o concretos                                                       | generico (se puede usar en cualquier dominio)
+- Idioms      | Especifico para algun lenguaje         | son concretos (tiene cod fuente relacionado a esa solucion)                  | generico
+              |
+- Patterns    | No son especificos para algun lenguaje | soluciones abstractas (cada vez que la queres usar tenes que implementarlas) | Generico
+              |
+- Frameworks  | Especificos para algun lenguaje        | Son concretos (vienen implementados)                                         | Estan relacionados a un dominio especifico
+
+aString nextPutAll: unString
+
+
+
+
+[codigo] ensure: [otro codigo]
+
+aunque codigo1 crashee, ensure hace que se corra el otro codigo.
+
+
+
+Decorator: Agrega comportamiento ortogonal (No pertenece al mismo dominio del problema de aquello que se esta decorando, recordar ejemplos conexiones) , de manera dinamica a un objeto
+
+
+become: Hace que todo lo que me este referenciando, pase a referenciar al parametro.
