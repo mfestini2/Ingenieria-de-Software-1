@@ -1,0 +1,44 @@
+Forwardear un mensaje no es delegar
+
+Cuando se forwardea, el self se pierde. Al delegar, self sigue siendo el objeto receptor del mensaje original.
+
+Ver el ejemplo de builder para la creacion de cadena de decorators en el orden correcto (Esta en la solucion que pasaron)
+
+####################################################
+
+Patron de diseño adapter: Permitir que puedan conversar entre si objetos que inicialmente no pueden
+
+Patron de diseño Proxy: Para controlar el acceso a un objeto (Ej un proxy de lazy inicialization).
+
+El closure bindea al contexto de ejecucion en cual el closure fue instanciado. (Si mando un closure como parametro, el contexto de ese closure va a ser el contexto desde donde se mando). Tambien puede servir para transparentar cosas (Ej un objeto que habla con otro objeto en un maquina distinta)
+
+Revisar la forma que hizo para que los proxys sean polimorficos dinamicamente (Le reemplaza el does not understand y hace que cuando no conoce un mensaje, le mande el mensaje a su proxee, si este tampoco lo conoce se envia un doesNotUnderstand comun, si si lo sabe responder, lo ejecuta como deberia)
+
+La razon para devolver directamente el proxy en vez de devolver proxy value, tenes que acordarte constantemente de que estas laburando con un proxy. Mientras que si devolves el proxy polimorfico es transparente.
+
+
+
+
+#############################
+
+Codigo robusto: Codigo que esta preparado para situaciones no previstas y sepa reaccionar apropiadamente.
+
+Para hacer try catch se usa:
+
+[bloque de codigo]
+on: Error
+do: [anError | self handle: anError]
+
+
+Cuando las personas hablan existe un contrato, puede ser implicito o explicito
+
+Al laburar con execepciones tenemos que tener en cuenta:
+
+0) Quien es el resopnsable de verificar la excepcion
+1)Quien es el responsable de levantar la excepcion (Vamos a levantarlas lo mas abajo posible dentro del arbol de ejecucion)
+2) Quien es el responsable de handlear la excepcion (Vamos a handlearlas lo mas arriba posible dentro del arbol de ejecucion)
+3 Que tipo de excepcion levantar
+4) Como handler la excepcion   
+
+
+shift + enter para entrar en un buscador en smalltalk
