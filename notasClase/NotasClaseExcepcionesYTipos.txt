@@ -1,0 +1,75 @@
+Que tipo de excepcion usar?
+Como handlear una excepcion?
+Quien es el responsable de handlear?
+Quien es el responsable de levantar?
+
+
+
+Como handlear una excepcion: Depende de como esta implementado el framework de excepciones. Hay 2 tipos de implementaciones de ese framework.
+
+Una es hacer un unwind del stack cuando se busca el handler: Va popeando el stack para buscar la direccion del handler para la excepcion. (Pierde el stack del contexto en donde estaba)
+
+La otra es mantener el stack
+
+Una de las cosas que se puede hacer es cortar la ejecucion y devolver algun resultado en cambio de lo que hubiera devuelto la colaboracion (potencialmente hubiera estado indefinida).
+Otra cosa que puedo hacer es continuar con la ejecucion (Ej: Continuaria con la ejecucion del bloque del on:do: asumiendo que el resultado para la colaboracion fea es lo que indique que retorne el do:)
+
+Para hacer esto ultimo en el do:se usa [:anError | anError resume: loQueQuieroMantenerComoResultadoParcial].
+
+Tambien podemos poner codigo en el closure del do y decirle que lo reintente ([:anError | codigo. anError retry ]
+
+Tambien podemos delegar el handleo en un handler superior [:anError | codigoPotencialmente(Ej escribir en el transcript). anError pass] (Sigue buscando un handler en un contexto superior de ejecucion, tendriamos que haber puesto esto como el bloque de otro on:do:)
+
+Estas ultimas cosas no se pueden hacer si se usa lo de popear el stack para buscar el handler.
+
+
+Que tipo de excepcion levantar, Hay 2 extremos:
+	Levanto un nuevo tipo de excepcion por cada condicion
+		Si el nombre de un cliente es null levanto una excepcion particular
+		Si la direccion de un cliente es null levanto otra excepcion particular
+		Asi para todas las cosas que puedan pasar.
+	
+	Levanto siempre la misma excepcion
+		Dividi por 0, levanto "error"
+		nombre vacio, levanto "error"
+		no pude abrir archivo, levanto "error"
+		Asi para todos los errores
+		
+Cuando nos interesa handlear la excepcion de una forma en particular, creamos una excepcion nueva. Si podemos hacerlo con una generica, no hace falta armar una nueva.
+
+Porque la condicion de error es un tipo (Clase) y no un booleano como de costumbre. En smalltalk la implementacion le envia handles: a lo que pongo como condicion. Si la clase de error sabe responder eso, vale meterlo. Ej los closures pueden responder, podriamos hacer  [:anError | self halt. divisor = 0]
+
+No hay que poner el ^ en el bloque del do: si lo que buscamos es retornar alguna cosa
+
+Tambien podemos poner on: Error - MessageNotUnderstood
+
+Si pongo Error signal: ´asddsa´ se crea una instancia de error y se le da como descripcion de error ´asddsa´
+
+
+#####################################################################
+
+Cambiando de tema:
+
+Que es un tipo? Se empezo usando la idea de que un tipo es la semantica que se le da a una posicion de memoria.
+
+Despues pasamos a hacer que sea ademas que es lo que se puede hacer con esa variable.
+
+En Smalltalk (para nosotros) un tipo va a ser un protocolo, un conjunto de mensajes.
+
+
+Podemos clasificar a los lenguajes de programacion segun como se indican los tipos: 
+
+Si se indica de forma explicita: Ej C, C++, Java
+Si se indica de forma implicita, se infiere: ml, haskell (De forma similar a como funcionaba en plp)
+Si No se documenta el tipo (dinamicamente tipados): Smalltalk, ruby, python.
+
+Otra forma de clasificarlos es segun cuando se chequea el tipo y que se hace cuando se rompe el sistema de tipos. Cuando puede ser en tiempo de compilacion o en tiempo de ejecucion. En el que se hace se define segun strong o weak (fuertemente tipados). (Strong implica que cuando se produce un error de tipo no se puede continuar)
+
+             Estaticamente tipados | Dinamicamente tipados
+Que/Cuando | Compilacion           | Ejecucion
+Strong     | java, c#, haskell     | Smalltalk, ruby
+Weak       | C/C++                 | VisualBasic6   (Los casteos automaticos hacen cosas de este estilo (1 + "2" = "12"))   (Un ejemplo de ser weak es poder castear un long a int)
+
+
+
+ctrl+shift+p
