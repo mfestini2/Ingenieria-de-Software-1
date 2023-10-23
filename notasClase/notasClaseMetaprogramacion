@@ -1,0 +1,35 @@
+Meta programar, construir programas cuyo dominio del problema son los programas. Estamos construyendo herramientas que nos permiten programar mejor (implementar el Browser, Debugger, Refactor automatizado)
+
+
+algoritmo de method lookup: Dado un objeto que es instancia de una clase A.
+
+Al enviar un mensaje lo primero que ocurre es que se pasa del objeto a la clase, si encuentra la implementacion del metodo, lo ejecuta. Cada clase conoce un method dictionary que relaciona un nombre de mensaje con un metodo.
+
+Entonces: El algoritmo va a la clase y busca en el method dictionary de la clase el mensaje, si lo encuentra, lo ejecuta. Si no lo encuentra va para la superclase, si no lo encuentra va para la siguiente superclase y asi, si en algun paso lo encuentra, ejecuta ese metodo. Si no lo encuentra en ninguna superclase, se envia a si mismo el mensaje doesNotUnderstand.
+
+Para hacerlo mas eficiente se uso una GLobal Lookup Cache con 256 entradas, cada entrada tenia el nombre del metodo (el selector), la clase del objeto al que se le enviaba y el puntero al metodo que lo implementaba.
+
+Polimorphic Inline Cache: La primera vez que se envia el mensaje se hace la busqueda y le reemplaza en el ("assembler") por un "call" a donde esta el metodo, el metodo ademas tiene un preambulo donde chequea que sea realmente un objeto de la clase sea realmente de la clase que tenia el metodo, si no pertenece debe volver a buscar y va a agregar este metodo y clase a la cache local del envio de ese mensaje. Ahora va a fijarse 2 lugares cuando se envie ese mensaje a ver si con alguno la pega y sino vuelve a buscar y vuelve a agregar. Si se llegase a pasar de 6 entradas en esa cache, se utiliza GLC. (Actualmente este es el algoritmo mas rapido para method lookup en lenguajes dinamicamente tipados)
+
+Para estaticamente tipado se utiliza "virtual tables". Se crea una tabla por cada clase, la dimension de la tabla es la cantidad de mensajes implementados por la jerarquia (incluye tambien sus superclases) y se los numera a los mensajes para poder buscarlos a traves de un indice. El method lookup consiste en hacer el call indirecto con el valor de la tabla. Es muy rapido para ejecucion, pero si agregas un mensaje a la clase raiz, tiene que cambiar los indices para todas sub subclases y luego recompilar para arreglar los calls que puedan haber cambiado. Esto solia ser bastante caro.
+
+Que pasa si hago un casteo de una clase B a una clase C, cuando vaya a buscar la tabla de la clase y me meta en el indice del metodo, como la tabla no cambio, si no tenia el mismo metodo en el mismo indice, va a hacer un llamado a otro metodo (si ni siquiera estaba definido ese indice, va a saltar a lo que haya en la basura y muy probablemente saltar un segfault, en el peor de los casos salta a algo que nada que ver)
+
+Cuando escribimos mensajes en instance, escribimos cosas que van al method dictionary de la clase. Cuando lo hacemos en la pestaña class, lo estamos haciendo en la metaclase de la clase.
+
+Todos los objetos son instancias de una clase, por lo que las clases tambien son instancias de una clase, cuando se le envia un mensaje a un objeto, lo busca en el methodDictionary de su clase, es irrelevante que ese objeto sea una clase, el metodo lo va a buscar a la clase de la cual es instancia. Si hicieramos que todas las clases sean instancias de una clase Class, si armaramos un mensaje de clase (Ej los de creacion de instancia especificos), como los mensajes se van a buscar a la clase del objeto, todas las clases van a poder responder ese mensaje. (Si tenemos el mensaje de creacion de clase 1/2, la clase Date tambien va a saber responder ese mensaje (porque esta implementado en la clase Class)).
+
+Para poder darle comportamiento especifico a cada clase, cada clase va a ser instancia de una metaclase, si la clase se llama Date, la metaclase se llama Dateclass. Cuis va a hacer que las jerarquias de metaclases reflejen la jerarquia de las clases, por lo que Dateclass va a ser subclase de Objectclass.
+
+Existe una clase llamada Behaviour que representa todo lo que puede tener comportamiento, tiene 2 subclases, Class y Metaclass. Objectclass va a ser subclase de Class (por lo tanto toda clase se comporta como Class), como tambien queremos representar metaclases, el new va a estar definido en Behaviour. A su ves, Behaviour es subclase de Object.
+
+Las metaclases van a ser instancias de Metaclass pero las clases son instancias de su propia metaclase, es mas, cada metaclase solo tiene una unica instancia (Su clase)
+
+Behaviourclass es la metaclase de behaviour, por lo tanto es instancia de metaclass
+Classclass es la metaclase de class, instancia de metaclass.
+Metaclass tambien tiene una metaclase llamada Metaclassclass, Metaclass es instancia de Metaclassclass
+Metaclassclass es instancia de Metaclass.
+
+La clase Class tiene un variable de instancia con sus subclases, tambien tienen una con su nombre
+All instances esta en Behaviour, por motivos de performance tambien esta en Metaclass
+Si quisieramos contar cuantas clases hay podemos a Metaclass enviarle el mensaje allInstances, preguntarle su tamaño y sumarle 1 porque Metaclass es instancia de Metaclassclass (Habria que sumarle el allInstances size de Metaclassclass pero esto es 1) 
