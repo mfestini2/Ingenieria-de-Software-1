@@ -41,3 +41,13 @@ Tener cohesion alta es indicacion de que todos los mensajes que responde un obje
 Empezar teniendo ifs, cuando saquemos los ifs va a aparecer poliformismo (Asumo, para cada transaccion). No queremos manchar la interfaz de las cuentas con cada reporte asi que vamos a hacer un method object por cada operacion. Pero efectivamente, cada reporte va a iterar sobre las transacciones y decirles que hagan algo. Prefeririamos que no fuera responsabilidad de las transacciones el hacer algo asi que hacemos double dispatch. Ahora los method object distintos nos van a quedar muy similares en su forma de funcionar, van a hacer double dispatch y tener un mensaje por cada transaccion, ademas de el mensaje del metodo que representan. Los mensajes de aviso de que tipo de transaccion soy van a quedar literalmente iguales pero con distinto nombre. Los fusionamos en uno con un nombre general. Luego los method objects van a usar ese nuevo mensaje y van a pasar a ser polimorficos. Como son polimorficos y todos representan reportes de FinancialAssets podemos meterlos adentro de una superclase.
 
 A partir de ahora, cada vez que queramos hacer un nuevo reporte, alcanza con crear una nueva subclase, definirle los mensajes polimorficos y el mensaje evaluar (o algo por el estilo).
+
+
+
+Vamos a sentir la necesidad de usar transactions. El mensaje de creacion de instancias puede recibir todos los parametros que hagan falta. Incluso la salida del metodo podriamos guardarla como colaborador interno.
+
+Pensar en como se podria hacer en un lenguaje estatico podria ayudarnos a entender como hacerlo.
+
+
+
+
