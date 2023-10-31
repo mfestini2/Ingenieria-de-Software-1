@@ -1,0 +1,25 @@
+The innovators, libro
+
+Antropomorfismo, darle a la cosa las responsabilidades de la cosa y tambien todo lo que yo hago con el (si yo hago validaciones como decidir que puedo poner o no en el carrito)
+
+Recibe pedidos via una API y dialoga de forma online con el validador de tarjetas
+Hacer que el nuevo sistema lea y genere los archivos que actualmente se usan como interfaz batch.
+
+Tenemos que hacer doble validacion para que la API no nos cobre por algo que ya podemos determinar que va a fallar.
+Evitar hacer pruebas con el validador de tarjetas a menos que sea absolutamente necesario.
+
+Se debe almacenar todas las compras realizadas para poder reponer stock, sacar estadisticas, etc.
+
+Heuristica para nombrar tests: El nombre del test tiene que sinteteizar el setup, el que se esta testeando y el assert. Con que empiezo, que hago y que espero que suceda. No usar en el nombre, "return", "throw", "signal". 
+
+Acordarse de pensar en el rol que tienen las cosas al momento de ponerles nombre.
+
+No empezar a testear por las interfaces, empezar unicamente por el modelo.
+
+Cuando vamos al supermercado agarramos un carrito vacio, podriamos hacer que ese sea el primer test. Como en el primer test devuelve true, podemos hacer un segundo que devuelva false, para sacar ese hardcode. El segundo tests podria ser agregar un item al carrito y ver que de false.
+
+Un posible tercer test es verificar que no se puedan agregar libros que no pertenecen a la editorial, aunque no sea responsabilidad del carrito, preferimos que nos avise de que la manqueamos lo antes posible, por lo que vamos a permitirle que sepa darse cuenta de que algun elemento que se le este agregando sea invalido. Esto ultimo lo vamos a hacer debido a que buscamos que sea antropomorfico.
+
+Cuando usemos una metafora, pensarla como funcionaba antes de que existiesen computadoras.
+
+Nuestro ejercicio actualmente es modelar y testear el carrito.
