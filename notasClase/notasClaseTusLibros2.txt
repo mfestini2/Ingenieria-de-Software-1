@@ -1,0 +1,39 @@
+Entender que si no hace nafa especifico, no hace falta crear una clase nueva, aun para el primer test.
+
+Cuando devolvemos colaboradores internos y no corresponde que puedan ser modificados desde afuera, devolver una copia.
+
+Usar el mensaje strictlyPositive para chequear que un numero sea positivo > 0.
+
+No es responsabilidad del programador agregar features que podrian llegar a ser utiles sino que corresponde preguntar.
+
+Una vez terminado un modulo/alguna parte del sistema, desarrollar lo que permita usarla para que el cliente compruebe que es lo que buscaba.
+
+Empezar por el checkout de un carrito vacio, segundo test un carrito con un elemento, tercer test un carrito con muchos elementos.
+
+Algun test, no se puede hacer un checkout con una tarjeta vencida.
+
+El cajero se envia a si mismo el mensaje debit: anAmmount from: aCredicCard.
+
+La contraseña es aVotar!
+
+git bisect para deteccion de errores al commitear
+
+Si no se nos ocurre que asercion hacer cuando testeamos por excepciones es que estamos haciendo algo raro
+
+Una tarjeta no es valida si tiene nombre vacio, si su numero no es de la longitud correcta.
+
+Hacer que el carrito pueda decir su precio, por lo tanto el catalogo deberia poder tener la lista de precios. De paso dejamos de tener inconsistencias por la posibilidad de que haya cosas en el catalogo y no en la lista de precios.
+
+
+-------
+
+El que debita realmente a la cuenta de la tarjeta de credito es el merchant processor, el sistema externo.
+
+Hacer un test de que no se pueda vender cuando la tarjeta esta
+
+- Robada
+. Sin credito
+
+Otro que si se pueda vender cuando la tarjeta esta con credito.
+
+No se nos esta pidiendo que modelemos que la tarjeta esta robada sino que tenemos que modelar que haria el cajero si se enterara de que la tarjeta esta robada.
