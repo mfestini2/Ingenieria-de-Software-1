@@ -1,0 +1,37 @@
+Podemos tener un objeto donde definimos todos los dummies que queramos usar.
+A las clases de test donde se van a usar esos dummies, se le agrega el nuevo objeto como colaborador y entonces los tests de esas clases pueden acceder a los dummies.
+
+A futuro seguramente haga falta tener un libro de ventas al cual le vamos a registrar cada venta post checkout
+
+Para la forma no por venta del cashier, lo que habia que testear en los casos que no se revisaba antes de crear el objeto era que no se le envie nada al merchant processor.
+
+Para simular el merchant processor hizo que la clase de los tests ademas supiera responder debit:from:, siendo polimorfico con el merchant processor, y en cada test creaba un closure y lo guardaba en un colaborador interno. Cuando le enviaban debit:from: devolvia el value del colaborador interno.
+
+Para la version cajero no por venta, cuando queremos ver que no se haga un debit:from:, hacemos que el debit:from: para ese caso levante fail, y dejamos que todo siga igual. Cuando corremos los tests, si llega al fail, el test nos falla y tenemos que arreglar algo, si no falla es porque nunca se envio el mensaje a ese metodo.
+
+Objetos simuladores: Tenemos tests para verificar un sistema, uno de los colaboradores puede llegar a generar un input indirecto que hacen complicado testear, ej es un sistema externo, o lo hace mas lento (base de datos), o se ejecutan en forma asincronica, o no devuelven los resultados necesarios para nuestro test (ej queremos que levante un error para testear que lo hacemos bien)
+
+El plan es hacer otro objeto que va a simular al sistema feo que queremos usar, este objeto nuevo tiene la misma interfaz y puede generar cualquier valor que haga falta.
+
+Tipos de simuladores:
+
+ - Dummy: En vez de haxer el objeto real que se le mandaria por parametro en tests donde no se les usan, se crea un dummy. Podria ser nil porque no se le usa, pero es feo.
+ - Stub: Devuelve respuestas predefinidas especificamente para el test (lo que hicimos con el merchantProcessorSimulator)
+ - Mock: Quiero verificar que se hayan recibido los parametros e invocados de la forma correcta, pero no chequea comportamiento porque aun no esta hecho. (Quiero escribir los tests de un sistema, sabiendo como deberian cargarse los datos al sistema, pero no quiero ponerme a realmente construir el sistema). Entonces lo que hace es verificar que se haya enviado el mensaje correspondiente.
+ - Fake: Proveen la misma funcionalidad pero mas light (ej base de datos pero ya cargada en memoria). Podria llegar a requerir otra clase de tests como para testear la base de datos simulada en memoria.
+
+Usamos simuladores para lograr que el test este en control de todo.
+
+Iteracion 3: Toca enfocarnos en la interfaz, como se construyen los pedidos a TusLibros
+
+Aun no hace falta respetar el formato que dan en el pdf. Tenemos que hacer un formato propio.
+
+Tenemos que hacer todos los tests de la interfaz y sin violar el encapsulamiento. Vamos a tener que modelar el tema del tiempo (los carritos duran 30 min y se pueden renovar). Ver como modelar el list purchases sin violar el encapsulamiento.
+
+la contraseña es fakeHernan.
+
+Al hacer algo nuevo sobre el carrito, se resetean los 30 min de la sesion
+
+El listPurchases es una lista de todos los elementos que compro el usuario junto a su cantidad, luego al final ademas se agrega cuanto gasto en total.
+
+Hay que crear un reloj propio y hacer que sea polimorfico con el del sistema
