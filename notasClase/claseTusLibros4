@@ -1,0 +1,31 @@
+Notas clase TusLibros4
+
+Romper el encapsulamiento genera tests fragiles, si te acoplas a las cosas que estan adentro de la interfaz, al assertar sobre estas cosas, si en algun momento se llega a cambiar, se rompen todos los tests aun cuando funcionarian si se usara correctamente la interfaz.
+
+
+Patron de diseño fachada, sirve para
+
+El chiste es que el cliente no deba acoplarse a las clases de adentro del sistema. Para evitar esto se le ofrece un punto de entrada desde el cual se puede acceder, con las operaciones que se les permite requerir. Con esto (la interfaz) podemos en algun momento cambiar el sistema completamente o parcialmente y alcanza con hacer que la interfaz responda el mismo protocolo para poder intercambiarlos. Ademas (y esto es clave) nos permite tener mas de una fachada/interfaz y por lo tanto varios sistemas puede usarlo sin que tengan nada que ver
+
+Acordarse de la idea de proxy polimorfico reemplazando la definicion del DoesNotUnderstand
+
+Acordarse en el parcial que si hay cosas que sabe hacer algo que no son su responsabilidad, tal vez me esta faltando modelar un objeto.
+
+
+
+------------------------------------------------------------------------------------------------------
+
+ARQUITECTURA DE SOFTWARE
+
+En parte, se trata de decidir en que computadora debe correr que codigo, como y con quien se comunica. Y tambien, se trata en parte de decidir como organizar el codigo.
+
+En general, en la arquitectura le prestamos gran atencion a los atributos de calidad (performance, disponibilidad, consistencia, etc)
+
+La contraseña es soylentGreenSpaghetti
+
+
+
+
+-------------------------------------------------------------
+
+[(Delay forSeconds: 3) wait. a:=a+1] fork
