@@ -1,0 +1,70 @@
+Acordarse la idea del promise para forkear metodos y que funcione igual.
+
+Vamos a aprender a mejorar el diseño sin cambiar comportamiento haciendo la mayor cantidad de refactorings automatizados y cuando no sea posible algunos manuales
+
+Testing es escribir los tests luego de desarrollar la aplicacion
+
+TDD es escribir los tests antes de desarollar esa funcionalidad de la aplicacion.
+
+Si se rompe no garantiza que se cierre la sesion
+Esta hardcodeado que lee el archivo input.txt
+
+Siempre buscamos que los tests esten en control de todo.
+
+Fixtures = datos de prueba
+
+Datos de pruebas transient: Corren en memoria, nunca persiste esta informacion. Son mas rapidos y ademas no se comparte la informacion entre tests, debido a esto los tests son independientes entre si. Si son tests independientes ademas los podemos paralelizar.
+
+Datos de prueba persistent fresh: Son persistentes pero se crean en cada test (Cada test recrea sus datos de prueba) (Ej, cada vez que abre la base de datos, borra la base de datos). Hariamos esto para mantener la independencia entre tests
+
+Datos de prueba persistent shared: Persisten y ademas se comparten entre los tests, hariamos esto para ahorrar tiempo (si es muy muy grande puede llegar a tardar una banda en levantar el sistema). No mantiene la independencia entre tests.
+
+Para el ejercicio de customerImporter estamos usando de tipo persistent fresh.
+
+
+Para obtener la session desde adentro del test, tenemos que sacar la definicion de la variable session de la base de datos y ademas 
+
+Para hacer lo primero tendriamos que mover un metodo de una clase a otra. Para hacer esto movemos el metodo (copiandolo y poniendolo en el lado de instancias de la parte del test), ademas luego tenemos que buscar los senders de ese metodo y hacer que apunten al del contexto del test. Una vez que movemos esto podemos borrar el metodo original.
+
+Una vez que tenemos el metodo adentro del test podemos sacarle la definicion dentro del test y hacer que pase a ser un colaborador interno. (Usando el refactor temporary to instante variable (G)). Una vez que hacemos esto ya no necesitamos inicializar session dentro del test.
+
+Por alguna razon no falla el test y se supone que deberia porque la base de datos deberia haberse cerrado.
+
+Los metodos para inicializar la base de datos los pondriamos en setup. Si estoy redefiniendo un mensaje tengo que tener en cuenta que si esta ya definido en la superclase tengo que ver que onda. Potencialmente requiera hacer super setup al inicio o al final
+
+Vamos a tambien sacarle la responsabilidad al metodo largo de cerrar la session. Los vamos a mandar a tearDown que es el mensaje que se ejecuta al finalizar cada test. Tener el mismo cuidado que con setup.
+
+Por lo general, si necesitamos un tearDown es porque estamos acoplados con algo externo, porque necesitamos liberar recursos, cerrar archivos, bases de datos, etc.
+
+Ahora si podemos usar la session y ver que funcione correctamente.
+
+Ademas de chequear que tenemos 2 clientes. Podriamos chequear a continuacion que el primer cliente sea el correcto y tenga los datos correctos.
+
+Para sacar el hardcodeo del archivo podemos usar el refactoring extract as parameter.
+
+Para luego sacar el metodo grande destripado y sacarlo de los tests usamos un method object.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
