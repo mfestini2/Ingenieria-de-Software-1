@@ -1,0 +1,70 @@
+Cada vez que se define el equals: hay que redefinir el hash.
+
+Esto todavia no es un method object completo porque todavia tiene variables de instancia.
+
+password = funciona!
+
+
+setUP
+customerSystem = persistentCustomerSystem new
+customerSystem start
+customerSystem beginTransaction
+
+
+tearDown
+
+customerSystem close
+customerSystem e
+
+
+
+
+para hacer un move method, dejamos el llamado nuevo metodo donde estaba el original, llevamos el original a desde donde queremos llamarlo
+
+
+Tenemos que ir viendo los senders de session para saber que cosas todavia teniamos acopladas y teniamos que sacar.
+
+Queremos finalmente al customerImporter pasarle el customerSystem, se lo vamos a pasar por parametro y lo vamos a guardar como una variable de instancia
+
+tomamos el metodo que queremos mover, lo ponemos en el nuevo lugar, cambiamos los senders del metodo viejo para que llamen al nuevo (move method)
+
+
+Poner inicialmente el customerSystem, ir reemplazando a medida que vamos encotrando que aparece.
+
+Ponemos cosas nuevas de arriba para abajo y sacamos cosas de abajo para arriba.
+
+
+Buscamos evitar que el customer importer tenga la sesion y que el test tampoco tenga la sesion, sino que utilizaen una interfaz de customerSystem.
+
+Una vez que armamos el persistentCustomerSystem vamos a crear la clase abstracta customerSystem y vamos a hacer que las cosas que correspondan sean subclass responisbility.
+
+acordarse de hacer inline method para sacar los getters y setters de session.
+
+Una vez que armamos la clase abstracta customerSystem vamos a armar transientCustomerSystem, entonces vamos a cambiar el setup para que use el transientCustomerSystem y vamos a tener que ir arreglandoslos de a 1.
+
+En transientCustomerSystems vamos a tener un set de customers, begin transaction no va a hacer nada porque no hace falta. El add customer lo va a a agregar al conjunto de customers. Para number of customers va a hacer el size del set de customers. Para el withIdentification vamos a usar un detect con la condicion que pedia. commit no va a hacer nada. Para simular que se cerro vamos a poner la variable de instacia de customers (que era el set) en nil para que cuando le pidamos algo se rompa.
+
+Vamos a buscar que automaticamente se detecte si conviene usar tests transient (rapidos) o tests persistent (los lentos). Hay distintos ambientes de ejecucion del sistema, como el de desarrollo, el de integracion, el de QA, el de produccion, etc. Entonces nos va a tocar modelar los ambientes (minimamente el de desarrollo y el de integracion). Vamos a tener la clase abstracta Environment.
+
+
+para inicializar el customerSystem vamos a usar Environment current createSystem. Hay que implementar esto.
+
+Current va a hacer self subclasses detet: [:anEnvironment | anEnvironment isCurrent] y a esa le hace new.
+
+
+Vamos a modelar la clase DevelopmentEnvironment e IntegrationEnvironment. 
+
+Cada uno de estos enviroments va a implementar el mensaje createSystem y adentro va a crear un Transient o Persistent System segun corresponda.
+
+por ejemplo podmeos hacer que cuando un environment responda isCurrent, que uno haga un not de lo que devuelva el otro, entonces solo tenemos que tocar un lugar para que se haga el cambio (va a ser un true o un false). Vamos a simularlo con (Smalltalk at: #ENV) = ´INT´ y otro que haga lo mismo pero compare con ´DEV´. Para hacer el cambio va a alcanzar con hacer Smalltalk at: #ENV put: ´ENV´ o ´INT´.
+
+Nos podemos hacer con morph 2 botones para que lo vayan haciendo.
+
+
+
+
+Lo que logramos al final fue romper el encapsulamiento con la session al customerSystem, le dumos la responsabilidad de manejar el acceso a la base de datos y manipular todo lo que corresponda a los clientes. como argegar clientes, como contar los clientes, como iniciar la transaccion con la base de datos.
+
+Si hubiera mas cosas que van cambiando segun el ambiente, las vamos a ir definiciendo en los distintos enviromentes (ej un port especifico o alguna cosa asi). Deberiamos haber hecho una cosa asi en el ejercicio de tusLibros.
+
+Para hacer el boton con el morph tenemos que usar el buttonMorph al crear un morph nuevo.
