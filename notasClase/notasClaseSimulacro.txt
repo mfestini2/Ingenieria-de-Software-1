@@ -1,0 +1,7 @@
+Acordarse de chequear precondiciones para los parametros (que no vengan vacios, etc)
+
+No olvidarse de implementar = anObject para comparar por igualdad en una clase nueva (ej la identificacion) y tambien habria que implementar el mensaje hash
+
+En el = hay que chequear primero que sean del mismo tipo, nunca puede levantar una excepcion, siempre debe dar verdadero o falso.
+
+la contraseña del ejercicio es finale!
